@@ -1,0 +1,30 @@
+@import "../../styles/variables"
+
+.container
+  @include top-block-wrapper
+  background: url("../../images/banner.png") center bottom/ 100% auto no-repeat,
+  position: relative
+  background-size: cover
+  padding-top: 40px
+  padding-bottom: 70px
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 21px
+  color: #fff
+  text-align: center
+  @media (min-width:$tabletSize)
+    padding-top: 89px
+    padding-bottom: 89px
+
+.sectionTitle
+  @include title
+  text-align: center
+  max-width: 380px
+
+.text
+  margin-bottom: 12px
+  max-width: 380px
+
+.link
+  color: rgba(0, 0, 0, 0.87)

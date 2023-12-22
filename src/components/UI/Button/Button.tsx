@@ -14,9 +14,9 @@ interface Props {
 
 const Button: FC<Props> = ({ children, disabled, onClick, props }) => {
   return (
-    <div {...props} onClick={onClick} className={classNames(styles.button, disabled ? styles.disabled : '')}>
+    <button {...props} onClick={onClick} className={classNames(styles.button, disabled ? styles.disabled : '')}>
       {children}
-    </div>
+    </button>
   )
 }
 

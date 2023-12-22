@@ -6,21 +6,28 @@ import Button from "components/UI/Button/Button"
 import styles from "./styles.module.sass"
 
 export const Header = () => {
+
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  };
   return (
     <header className={styles.header}>
-      <img alt="logo" src={logo} />
-      <nav className={styles.nav}>
-        <Button>
-          <a href="#users">
+      <div className={styles.content}>
+        <img alt="logo" src={logo} />
+        <nav className={styles.nav}>
+          <Button onClick={() => scrollToSection('users')}>
             Users
-          </a>
-        </Button>
-        <Button>
-          <a href="#sign-up">
+          </Button>
+          <Button onClick={() => scrollToSection('sign-up')}>
             Sign up
-          </a>
-        </Button>
-      </nav>
+          </Button>
+        </nav>
+      </div>
     </header>
   )
 }

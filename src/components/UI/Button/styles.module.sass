@@ -1,6 +1,7 @@
 @import "../../../styles/variables"
 
 .button
+  border: none
   border-radius: 17px
   background: $secondary-color
   padding: 4px 23px
@@ -8,6 +9,7 @@
   justify-content: center
   gap: 4px
   min-width: 100px
+  width: max-content
   box-sizing: border-box
   cursor: pointer
   display: none
@@ -17,6 +19,6 @@
       background: #FFE302
 
 .disabled
-  cursor: not-allowed
-  background: #B4B4B4
-  color: #fff
+  cursor: not-allowed !important
+  background: #B4B4B4 !important
+  color: #fff !important
