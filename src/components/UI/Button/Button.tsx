@@ -9,13 +9,18 @@ interface Props {
   disabled?: boolean,
   onClick?: () => void,
   props?: { [key: string]: string | number | boolean }
+  isLoading?: boolean
 }
 
 
-const Button: FC<Props> = ({ children, disabled, onClick, props }) => {
+const Button: FC<Props> = ({ children, disabled, onClick, props, isLoading }) => {
   return (
-    <button {...props} onClick={onClick} className={classNames(styles.button, disabled ? styles.disabled : '')}>
-      {children}
+    <button
+      {...props}
+      onClick={onClick}
+      className={classNames(styles.button, disabled ? styles.disabled : '', isLoading ? styles.loading : '')}
+    >
+      {isLoading ? "Loading..." : children}
     </button>
   )
 }

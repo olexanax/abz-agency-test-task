@@ -1,107 +1,45 @@
 //styles
 import styles from "./styles.module.sass"
-//types
+//components
+import Form from "./Form/Form";
 //libs
-import { useForm } from "react-hook-form";
-//compoents
-import Button from "components/UI/Button/Button"
-import classNames from "classnames";
+import { toast } from 'sonner';
+import { useEffect } from "react"
+import { motion } from "framer-motion";
+//redux
+import { useGetPositionsQuery } from "reduxFolder/api/positions/slice";
 
-type Inputs = {
-  name: string
-  email: string
-  phone: string
-  position: string
-  photo: File
-}
-
+const titleVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.6 } },
+};
 
 const FormBlock = () => {
-  const { register, handleSubmit, formState: { errors }, } = useForm<Inputs>();
+  const { data: positionsData, isError: positionsError, isLoading: positionsLoading } = useGetPositionsQuery({})
 
-  const onSubmit = (data: Inputs) => {
-    // Обробка подання даних
-    console.log(data);
-  };
+  useEffect(() => {
+    if (positionsError) {
+      toast('Oops, something went wrong (positions)', {
+        position: 'top-right',
+        duration: 4000
+      })
+    }
+
+  }, [positionsError])
+
 
   return (
     <section id="sign-up" className={styles.container}>
-      <h2 className={styles.sectionTitle}>
+      <motion.h2
+        initial="hidden"
+        animate="visible"
+        variants={titleVariants}
+        className={styles.sectionTitle}>
         Working with POST request
-      </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <div className={styles.inputBlock}>
-          <input
-            {...register("name", { required: true })}
-            placeholder="Your name"
-            className={styles.input}
-            type="text" />
-        </div>
-        <div className={styles.inputBlock}>
-          <input
-            {...register("email", { required: true })}
-            placeholder="Email"
-            className={styles.input}
-            type="text" />
-        </div>
-        <div className={styles.inputBlock}>
-          <input
-            {...register("phone", { required: true })}
-            placeholder="Phone"
-            className={styles.input}
-            type="text" />
-          <span className={styles.fieldTemplate}>+38 (XXX) XXX - XX - XX</span>
-        </div>
-        <div className={classNames(styles.inputBlock, styles.radioBlock)}>
-          <p className={styles.title}>Select your position</p>
-          <div className={styles.radioBlock}>
-            <label htmlFor="Frontend developer" className={styles.radio} >
-              <input
-                {...register("position")}
-                type="radio"
-                name="weather"
-                value="rain"
-                id="Frontend developer"
-              />
-              Frontend developer
-            </label>
-            <label htmlFor="Backend developer" className={styles.radio} >
-              <input
-                {...register("position")}
-                type="radio"
-                name="weather"
-                value="rain"
-                id="Backend developer"
-              />
-              Backend developer
-            </label>
-            <label htmlFor="Designer" className={styles.radio} >
-              <input
-                {...register("position")}
-                type="radio"
-                name="weather"
-                value="rain"
-                id="Designer"
-              />
-              Designer
-            </label>
-          </div>
-        </div>
-        <div className={classNames(styles.fileUploader)}>
-          <div className={styles.uploadButton}>
-            Upload
-            <input    {...register("photo", { required: true })} type="file" className={styles.fileInput} />
-          </div>
-          <p className={styles.fileName}>
-            <span className={styles.placeholder}>
-              Upload your photo
-            </span>
-          </p>
-        </div>
-        <Button props={{ type: "submit" }} >
-          Sign up
-        </Button>
-      </form>
+      </motion.h2>
+      <Form
+        positionsData={positionsData?.positions}
+        {...{ positionsError, positionsLoading }} />
     </section >
   )
 }

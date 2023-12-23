@@ -1,78 +1,68 @@
 //styles
 import styles from "./styles.module.sass"
-//types
-import { UserType } from "types"
 //compoents
 import UserCard from "./UserCard/UserCard"
 import Button from "components/UI/Button/Button"
+import Skeleton from "components/UI/Skeleton/Skeleton"
+//libs
+import { toast } from 'sonner';
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion";
+//redux
+import { useGetUsersQuery } from "reduxFolder/api/users/slice"
 
-const USERS: Partial<UserType>[] = [
-  {
-    id: "1",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  },
-  {
-    id: "2",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  },
-  {
-    id: "3",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  },
-  {
-    id: "4",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  },
-  {
-    id: "5",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  },
-  {
-    id: "6",
-    name: "Takamaru Ayako Jurrien",
-    email: "Takamuru@gmail.com",
-    phone: "+38 (098) 278 90 24",
-    position: "Lead Independent Director ",
-    photo: "https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
-  }
-]
+const titleVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.6 } },
+};
 
 const UsersBlock = () => {
+  const [page, setPage] = useState(1)
+  const { data, error, isLoading, isFetching } = useGetUsersQuery({ page: 1, count: page * 6 })
 
-  const onLocadMore = () => console.log("more")
+  const preloader = isLoading || error ?
+    (new Array(6).fill(null).map((_, i) => (
+      <Skeleton key={i} className={styles.skeletonCard}>
+        <Skeleton className={styles.skeletonImage} />
+        <Skeleton className={styles.skeletonName} />
+        <Skeleton className={styles.skeletonData} />
+      </Skeleton>
+    )))
+    : null
+
+  const content = data?.users && !error && !isLoading ?
+    data?.users.map((user) => <UserCard key={user.id} {...user} />)
+    : null
+
+  useEffect(() => {
+    if (error) {
+      toast('Oops, something went wrong (users)', {
+        position: 'top-right',
+        duration: 4000
+      })
+    }
+  }, [error])
+
+
   return (
     <section id="users" className={styles.container}>
-      <h2 className={styles.sectionTitle}>
+      <motion.h2
+        initial="hidden"
+        animate="visible"
+        variants={titleVariants}
+        className={styles.sectionTitle}>
         Working with GET request
-      </h2>
+      </motion.h2>
       <div className={styles.usersList}>
-        {
-          USERS.map((user) => <UserCard key={user.id} {...user} />)
-        }
+        {preloader}
+        {content}
       </div>
-      <Button onClick={onLocadMore}>
-        Show more
-      </Button>
+      {
+        (data && data?.total_users > data?.users.length) &&
+        <Button disabled={isFetching} onClick={() => setPage(page + 1)}>
+          Show more
+        </Button>
+      }
     </section>
   )
 }
