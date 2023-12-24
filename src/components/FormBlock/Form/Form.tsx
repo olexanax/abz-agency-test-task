@@ -22,7 +22,7 @@ import { usePostUserMutation, useLazyGetTokenQuery } from "reduxFolder/api/users
 //utils
 import scrollTo from "lib/utils/scrollTo";
 //imagesi
-import successBanner from "images/success-image.png"
+import successBanner from "images/success-image.webp"
 
 
 type Props = {
