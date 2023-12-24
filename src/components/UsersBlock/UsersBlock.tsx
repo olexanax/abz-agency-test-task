@@ -59,7 +59,7 @@ const UsersBlock = () => {
       </div>
       {
         (data && data?.total_users > data?.users.length) &&
-        <Button disabled={isFetching} onClick={() => setPage(page + 1)}>
+        <Button isLoading={isFetching || isLoading} onClick={() => setPage(page + 1)}>
           Show more
         </Button>
       }
