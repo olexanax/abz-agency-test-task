@@ -1,6 +1,46 @@
-# Getting Started with Create React App
+# Dear abz.agency
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This test task was interesting and enjoyable to complete, thank you for that
+
+Stack:
+- React + TypeScript
+- SASS + sass.modules 
+- RTK query + query-string (for requests and to work with API)
+- Ract Hook Form (to work with form)
+- ZOD (to work with form validation)
+- framer-motion  (to add some animation for best user experience)
+- sonner (toast lib for displaying errors)
+
+In general, the project has the following structure:
+src folder:
+- components (all interface components are here)
+- images (images here)
+- lib (utilities, helpers, validators, project wrappers here)
+- reduxFolder (all API requests and logic here)
+- styles (general styles here)
+
+list of completed items:
+- Working with mockups ( HTML/CSS).
+- Working with REST API (GET).
+- Working with REST API (POST)
+- Website optimization:
+   1.Image optimization (converting to webp format)
+   2.Checked my work using Google Page Speed
+   3.Checked my work using Lighthouse
+
+
+All the requirements and tasks in the test assignment have been completed in full. I also added animations and replaced the spinner with Skeleton when displaying content loading
+Validation when creating a user is equal to validation from the API. When working with styles, I used the mobile-first pattern
+
+GitHub repo: https://github.com/olexanax/abz-agency-test-task
+
+Deploy link: https://abz-agency-test-task-jet.vercel.app/
+
+CV link: https://drive.google.com/file/d/1lk6r4HzwmxASrRzsbobk74RUr8_Ibim-/view
+
+Portfolio link: https://my-portfolio-nine-theta-87.vercel.app/
+
+Overall, it was an interesting test task, I was happy to work with this API with detailed documentation, thank you for that)
 
 ## Available Scripts
 
