@@ -1,6 +1,5 @@
 //styles
 import styles from "./styles.module.sass"
-import global from "styles/global.sass"
 //libs
 import classNames from "classnames"
 import { motion } from "framer-motion";
@@ -29,7 +28,7 @@ const Banner = () => {
     <section className={styles.container}>
       <div className={styles.content}>
         <motion.h1
-          className={classNames(styles.sectionTitle, global.title)}
+          className={classNames(styles.sectionTitle)}
           initial="hidden"
           animate="visible"
           variants={titleVariants}
