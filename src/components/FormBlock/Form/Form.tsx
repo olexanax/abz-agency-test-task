@@ -5,12 +5,12 @@ import Skeleton from "components/UI/Skeleton/Skeleton";
 import ModalWindow from "components/UI/ModalWindow/ModalWindow";
 //libs
 import { toast } from 'sonner';
-import { useEffect, useState, FC } from "react"
+import { useEffect, useState, FC, useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import classNames from "classnames";
 //compoents
 import Button from "components/UI/Button/Button"
-import classNames from "classnames";
 //types
 import {
   type UserFormSchema,
@@ -47,7 +47,7 @@ const Form: FC<Props> = ({ positionsData, positionsError, positionsLoading }) =>
   })
 
 
-  const onSubmit = async (data: UserFormSchema) => {
+  const onSubmit = useCallback(async (data: UserFormSchema) => {
     const { name, email, phone, photo, position } = data
     const formData = new FormData();
 
@@ -85,7 +85,9 @@ const Form: FC<Props> = ({ positionsData, positionsError, positionsLoading }) =>
         duration: 4000
       })
     }
-  }
+    //eslint-disable-next-line
+  }, [])
+
 
   useEffect(() => {
     if (!succesBannerConfig.isOpen && succesBannerConfig.wasPostReq) {
@@ -97,23 +99,25 @@ const Form: FC<Props> = ({ positionsData, positionsError, positionsLoading }) =>
     }
   }, [succesBannerConfig])
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setSelectedFileName(file ? file.name : null);
-  };
+  }, [])
 
-  const positionsMarkup = positionsData?.map((pos) => (
-    <label key={pos.id} htmlFor={pos.id} className={styles.radio} >
-      <input
-        {...register("position")}
-        type="radio"
-        name="position"
-        value={pos.id}
-        id={pos.id}
-      />
-      {pos.name}
-    </label>
-  ))
+  const positionsMarkup = useMemo(() => {
+    return positionsData?.map((pos) => (
+      <label key={pos.id} htmlFor={pos.id} className={styles.radio} >
+        <input
+          {...register("position")}
+          type="radio"
+          name="position"
+          value={pos.id}
+          id={pos.id}
+        />
+        {pos.name}
+      </label>
+    ))
+  }, [positionsData, register])
 
   const positionsPreloader = positionsError || positionsLoading ?
     (new Array(4).fill(null)).map((_, i) => (
